@@ -9,7 +9,7 @@ import (
 
 var client = http.Client{Timeout: time.Second * 10}
 
-func bulkInsert(table *Table) {
+func BulkInsert(table *Table) {
 	if table.Buffer.Len() == 0 {
 		log.Debugf("no data in buffer %s, continue...", table.Name)
 		return
@@ -50,7 +50,7 @@ func StartTimer() {
 	for range ticker.C {
 		for _, db := range config.Schemas {
 			for _, table := range db.Tables {
-				go bulkInsert(table)
+				go BulkInsert(table)
 			}
 		}
 	}

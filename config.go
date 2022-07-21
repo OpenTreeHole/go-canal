@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"flag"
+	"github.com/go-mysql-org/go-mysql/canal"
 	"github.com/go-mysql-org/go-mysql/schema"
 	"golang.org/x/exp/slices"
 	"gopkg.in/yaml.v3"
@@ -87,11 +88,15 @@ func (config *Config) Initialize(eventTable *schema.Table) {
 	}
 }
 
-var config Config
+var (
+	config     Config
+	configFile string
+	dump       bool
+)
 
 func init() {
-	var configFile string
 	flag.StringVar(&configFile, "config", "config.yaml", "config file path")
+	flag.BoolVar(&dump, "dump", false, "dump existing data")
 	flag.Parse()
 
 	file, err := ioutil.ReadFile(configFile)
@@ -121,4 +126,13 @@ func init() {
 			}
 		}
 	}
+}
+
+func NewConfig() *canal.Config {
+	cfg := canal.NewDefaultConfig()
+	cfg.Addr = config.Address
+	cfg.User = config.User
+	cfg.Password = config.Password
+
+	return cfg
 }

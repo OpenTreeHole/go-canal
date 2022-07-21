@@ -16,6 +16,10 @@ var log = &logrus.Logger{
 }
 
 func main() {
+	if dump {
+		Dump()
+	}
+
 	go StartTimer()
 
 	c, err := canal.NewCanal(NewConfig())
