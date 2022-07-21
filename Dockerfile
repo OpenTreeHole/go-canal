@@ -17,6 +17,8 @@ FROM alpine
 
 WORKDIR /app
 
+RUN apk add --no-cache mariadb-client
+
 COPY --from=builder /app/go-canal /app/
 
 ENTRYPOINT ["./go-canal", "-config", "/etc/canal/config.yaml"]
