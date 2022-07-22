@@ -44,7 +44,6 @@ func Dump() {
 				func(row []mysql.FieldValue) error {
 					data := map[string]any{}
 					for i, field := range row {
-
 						if field.Type == mysql.FieldValueTypeString {
 							data[table.ColumnNames[i]] = string(field.AsString())
 						} else {
@@ -55,9 +54,11 @@ func Dump() {
 					if err != nil {
 						log.Error("failed to parse row data to json", err)
 					}
+					table.Lock.Lock()
 					table.Buffer.WriteString(fmt.Sprintf("{\"index\":{\"_id\": %d}}\n", data["id"]))
 					table.Buffer.WriteString(string(bytes))
 					table.Buffer.WriteString("\n")
+					table.Lock.Unlock()
 					n++
 					if n == 100000 {
 						BulkInsert(table)
