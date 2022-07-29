@@ -60,9 +60,9 @@ func Dump() {
 					table.Buffer.WriteString("\n")
 					table.Lock.Unlock()
 					n++
-					if n%10000 == 0 {
+					if n%100000 == 0 {
 						BulkInsert(table)
-						log.Info("synced %d rows", n)
+						log.Infof("synced %d rows", n)
 					}
 					return nil
 				}, nil)

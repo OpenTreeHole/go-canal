@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-var client = http.Client{Timeout: time.Second * 10}
+var client = http.Client{Timeout: time.Second * 100}
 
 func BulkInsert(table *Table) {
 	if table.Buffer.Len() == 0 {
